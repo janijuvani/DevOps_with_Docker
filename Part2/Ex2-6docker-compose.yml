@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+    frontend:
+      build:
+        context: example-frontend
+        dockerfile: dockerfile
+      container_name: cont_frontend
+      ports:
+        - 5000:5000
+    redis:
+      image: redis
+      ports:
+        - 6379:6379
+    backend:
+      build:
+        context: example-backend
+        dockerfile: dockerfile
+      container_name: cont_backend
+      ports:
+        - 8080:8080
+      environment:
+        - REDIS_HOST=redis
+        - POSTGRES_HOST=db
+        - POSTGRES_PASSWORD=example
+      depends_on:
+        - db
+    db:
+      image: postgres
+      restart: unless-stopped
+      environment:
+        POSTGRES_PASSWORD: example
+      container_name: db_backend
+
+      
