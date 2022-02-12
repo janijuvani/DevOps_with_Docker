@@ -1,0 +1,45 @@
+version: '3.8'
+
+# In frontend dockerfile I changed REACT_APP_BACKEND_URL to http://localhost/api/
+# In backend dockerfile I changed REQUEST_ORIGIN to http://localhost/
+
+services:
+    frontend:
+      build:
+        context: example-frontend
+        dockerfile: dockerfile
+      container_name: cont_frontend
+      #ports:
+      #  - 5000:5000
+    redis:
+      image: redis
+      volumes:
+       - ./redis:/var/lib/redis/
+    backend:
+      build:
+        context: example-backend
+        dockerfile: dockerfile
+      container_name: cont_backend
+      #ports:
+      #  - 8080:8080
+      environment:
+        - REDIS_HOST=redis
+        - POSTGRES_HOST=db
+        - POSTGRES_PASSWORD=example
+      depends_on:
+        - db
+    db:
+      image: postgres
+      restart: unless-stopped
+      environment:
+        POSTGRES_PASSWORD: example
+      container_name: db_backend
+      volumes:
+        - ./database:/var/lib/postgresql/data
+    web:
+      image: nginx
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      ports:
+        - 80:80
+      
