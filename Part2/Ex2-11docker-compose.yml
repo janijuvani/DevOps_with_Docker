@@ -1,0 +1,29 @@
+version: '3.8'
+
+# I used this docker compose and dockerfiles to put up development environment for 
+# bloglist frontend and backend from Full Stack Open course.
+# From frontend package.json I changed proxy to "http://backend:3003"
+
+services:
+    frontend:
+      build:
+        context: bloglist-frontend
+        dockerfile: dockerfile
+      container_name: cont_frontend
+      ports:
+        - 3000:3000
+      environment:
+        CHOKIDAR_USEPOLLING: "true"
+      volumes:
+       - ./bloglist-frontend:/usr/src/app/my-app
+       - /usr/src/app/my-app/node_modules
+    backend:
+      build:
+        context: bloglist-backend
+        dockerfile: dockerfile
+      container_name: cont_backend
+      ports:
+        - 3003:3003
+      volumes:
+        - ./bloglist-backend:/usr/src/app/api
+        - /usr/src/app/api/node_modules
