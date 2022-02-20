@@ -1,0 +1,23 @@
+name: Deploy # Name of the workflow
+
+#Github https://github.com/janijuvani/DevOps_docker_Ex3-1
+#Heroku https://countryinfojani.herokuapp.com/
+
+# On a push to the branch named main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "countryinfojani" #Must be unique in Heroku
+          heroku_email: "janijuvani@hotmail.com"
+          usedocker: true
+
