@@ -1,0 +1,15 @@
+FROM ubuntu
+
+WORKDIR /usr/src/app
+COPY . .
+
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get update && apt-get install -y docker.io
+
+
+RUN chmod +x script.sh
+
+CMD ./script.sh
+
+
