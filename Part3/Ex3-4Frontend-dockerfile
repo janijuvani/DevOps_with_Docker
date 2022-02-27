@@ -1,0 +1,27 @@
+FROM ubuntu:latest
+
+#1.17GB with node:14 RUN commands separately
+#903MB with ubuntu:latest RUN commands separately
+#899MB with ubuntu:latest RUN commands combined
+#895MB with ubuntu:latest RUN commands combined and curl removed
+
+
+WORKDIR /usr/src/app
+COPY . .
+
+ENV REACT_APP_BACKEND_URL http://localhost/api/
+
+RUN apt-get update && apt-get install -y curl && curl https://deb.nodesource.com/setup_14.x | apt-get install -y nodejs && apt-get install -y npm && npm install && npm run build && npm install -g serve && useradd -m appuser && apt-get purge -y --auto-remove curl
+
+#RUN apt-get update
+#RUN apt-get install -y curl
+#RUN curl https://deb.nodesource.com/setup_14.x | apt-get install -y nodejs
+#RUN apt-get install -y npm 
+#RUN npm install 
+#RUN npm run build 
+#RUN npm install -g serve
+#RUN useradd -m appuser
+
+USER appuser
+
+CMD ["serve", "-s", "-l", "5000", "build"]

@@ -1,0 +1,18 @@
+FROM golang:1.16
+
+#1.07GB with golang:1.16 RUN commands separately
+#1.07GB with golang:1.16 RUN commands combined
+
+WORKDIR /usr/src/app
+COPY . .
+
+ENV REQUEST_ORIGIN http://localhost/
+
+RUN go build && useradd -m appuser
+
+#RUN go build
+#RUN useradd -m appuser
+
+USER appuser
+
+CMD ./server
