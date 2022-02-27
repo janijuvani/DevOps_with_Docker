@@ -1,0 +1,15 @@
+FROM golang:1.16-alpine
+
+#1.07GB with golang:1.16 
+#447MB with golang:1.16-alpine
+
+WORKDIR /usr/src/app
+COPY . .
+
+ENV REQUEST_ORIGIN http://localhost/
+
+RUN go build && adduser -D appuser
+
+USER appuser
+
+CMD ./server

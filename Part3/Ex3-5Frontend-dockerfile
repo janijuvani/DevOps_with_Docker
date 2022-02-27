@@ -1,0 +1,15 @@
+FROM node:14-alpine
+
+#1.17GB with node:14 
+#345MB with node:14-alpine 
+
+WORKDIR /usr/src/app
+COPY . .
+
+ENV REACT_APP_BACKEND_URL http://localhost/api/
+
+RUN npm install && npm run build && npm install -g serve && adduser -D appuser
+
+USER appuser
+
+CMD ["serve", "-s", "-l", "5000", "build"]
