@@ -1,0 +1,23 @@
+FROM golang:1.16-alpine as build-stage
+
+#1.07GB with golang:1.16 
+#447MB with golang:1.16-alpine
+#18.1MB with scratch
+
+WORKDIR /usr/app
+COPY . .
+
+ENV REQUEST_ORIGIN http://localhost/
+RUN adduser -D appuser
+
+RUN CGO_ENABLED=0 go build -o build .
+
+FROM scratch
+WORKDIR /usr/app
+COPY . .
+COPY --from=build-stage /usr/app/build /build
+COPY --from=build-stage /etc/passwd /etc/passwd
+
+USER appuser
+
+ENTRYPOINT ["/build"]
