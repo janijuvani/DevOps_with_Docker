@@ -1,5 +1,5 @@
 FROM node:12.16.2 as build-stage
-#66.2 MB
+#Kurkkumopo frontend 66.2 MB
 
 WORKDIR /usr/app
 COPY . .

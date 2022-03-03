@@ -1,6 +1,6 @@
 FROM node:12.16.2
 
-#1.1 GB
+#Kurkkumopo frontend 1.1 GB
 
 WORKDIR /usr/src/app
 
